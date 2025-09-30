@@ -1,0 +1,32 @@
+name: Production Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag to deploy (e.g., v1.2.0)'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: YOUR_AWS_REGION # e.g., eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: YOUR_ECS_TASK_DEFINITION_NAME
+          service: YOUR_ECS_SERVICE_NAME
+          cluster: YOUR_ECS_CLUSTER_NAME
+          image: ${{ steps.login-ecr.outputs.registry }}/YOUR_ECR_REPOSITORY:${{ github.event.inputs.version }}
+          wait-for-service-stability: true

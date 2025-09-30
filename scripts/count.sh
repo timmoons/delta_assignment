@@ -1,3 +1,2 @@
 #!/bin/sh
-
-curl -s http://localhost:3000/assets/count | jq
+curl -s http://app:3000/assets/count | jq

@@ -44,4 +44,6 @@ This document outlines the architectural plan for deploying the service to a pro
 
 - **Logging:** The Fargate service will be configured to stream all application logs (`stdout`/`stderr`) to **Amazon CloudWatch Logs** for centralized logging and analysis.
 - **Metrics:** **Amazon CloudWatch Metrics** will be used to monitor the performance of all resources (Fargate, ALB, RDS, etc.).
-- **Alarms:** **CloudWatch Alarms** will be configured to trigger on key performance indicators (e.g., high Fargate CPU, ALB 5xx error rate). These alarms will send notifications to the engineering team via **Amazon SNS**.
+- **Alarms:** **CloudWatch Alarms** will be configured to trigger on key performance indicators (e.g., high Fargate CPU, ALB 5xx error rate). These alarms will send notifications to the engineering team via **Amazon SNS** / **Slack**.
+
+
