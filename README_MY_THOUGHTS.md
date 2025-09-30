@@ -36,6 +36,7 @@ Options elasticsearch:
 Downgrade to Elasticsearch 7.10 (may require code/config changes).
 Migrate to OpenSearch 1.x or 2.x, which is based on Elasticsearch 7.10+ but has diverged.
 
+
 Options for MySQL:
 Upgrade to 8.0 (AWS recommendation)
 
@@ -46,3 +47,4 @@ Follow owasp security standards
 
 "github actions, gitlab runner, jenkins for future dedicated tooling env"
 
+"node 16 is very outdated"
