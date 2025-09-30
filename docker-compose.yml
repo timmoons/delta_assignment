@@ -1,0 +1,73 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=test
+      - REDIS_HOST=redis
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+    networks:
+      - delta-net
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_ROOT_PASSWORD=test
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - delta-net
+
+  redis:
+    image: redis:6-alpine
+    restart: always
+    #healthcheck:
+    #  test: ["CMD", "redis-cli", "ping"]
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 5
+    networks:
+      - delta-net
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    #healthcheck:
+    #  test: ["CMD-SHELL", "curl -s -f http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s"]
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 5
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - delta-net
+
+volumes:
+  mysql-data:
+  es-data:
+
+networks:
+  delta-net:
