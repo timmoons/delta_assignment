@@ -35,3 +35,25 @@ This project is fully containerized for a consistent and easy-to-manage developm
     docker-compose down
     ```
     To remove the persistent data volumes as well, use `docker-compose down -v`.
+
+## Interacting with the Service
+
+The `scripts/` directory contains a set of helper scripts for interacting with the service's API endpoints. Once the service is running, you can use these scripts from another terminal.
+
+- **`scripts/add_asset.sh`**: Populates the database with three sample crypto assets.
+- **`scripts/count.sh`**: Retrieves the total count of assets.
+- **`scripts/get.sh`**: Retrieves a specific asset by its ID.
+- **`scripts/search.sh`**: Performs a search query for assets.
+
+**Example Usage:**
+
+```sh
+# Make sure the scripts are executable
+chmod +x scripts/*.sh
+
+# Add sample data
+./scripts/add_asset.sh
+
+# Get the total count
+./scripts/count.sh
+```
